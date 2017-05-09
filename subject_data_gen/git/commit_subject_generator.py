@@ -8,7 +8,7 @@ git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-13} | pyt
 by Alex Courouble
 """
 import sys, sqlite3
-DB_PATH = '/path/to/future/DB/commit_subject_short.db'
+DB_PATH = '~/Desktop/email2git_data/commit_subject.db'
 
 # getting data from stdin and storing it in a list of tuples before populating sqlite DB
 data = sys.stdin.read()
