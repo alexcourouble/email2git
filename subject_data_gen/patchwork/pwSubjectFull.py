@@ -1,11 +1,13 @@
 """
 Script used to create a DB from the patchwork email subject data dump.
 
+in PWDB: "select id, name from patchwork_patch"
+
 By Alex Courouble
 """
 import sqlite3
-INPUT_FILE_PATH = '~/Desktop/email2git_data/subject/pwSubject.txt'
-DB_PATH = '~/Desktop/email2git_data/pwSubject.db'
+INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/subject_full_pw.txt'
+DB_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject.db'
 
 
 table = []
