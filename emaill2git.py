@@ -5,9 +5,8 @@ Author: Alex Courouble <alex.courouble@gmail.com>
 import sqlite3
 
 
-PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject.db'
+PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
 GIT_DB = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
-
 OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/SUBJECT_OUTPUT.txt'
 
 def getSubjectMatches():
@@ -33,7 +32,7 @@ def getSubjectMatches():
 			count = 0
 			for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
 				# print str(j[0])+','+i
-				matches.write(str(j[0])+','+i)
+				matches.write(str(j[0])+','+i+'\n')
 				count += 1
 			if count == 0: notMatched.append(i)
 
