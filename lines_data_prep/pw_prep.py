@@ -80,7 +80,7 @@ if __name__ == '__main__':
 		out[i] = {}
 		out[i]["lines"] = PATCHES[i].lines
 		out[i]["files"] = PATCHES[i].files
-		out[i]["author"] = PATCHES[i].author
+		out[i]["author"] = PATCHES[i].author.email
 		# print PATCHES[i].pwid
 		# print PATCHES[i].files
 		# print PATCHES[i].author.email
