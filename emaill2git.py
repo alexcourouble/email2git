@@ -3,11 +3,18 @@
 Author: Alex Courouble <alex.courouble@gmail.com>
 """
 import sqlite3
+import cPickle as pickle
 
-
+# SUBJECT
 PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
 GIT_DB = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
 OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/SUBJECT_OUTPUT.txt'
+
+# LINES
+PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED.txt'
+
+PATCH_FILE_MAP = {}
+
 
 def getSubjectMatches():
 	connGIT = sqlite3.connect(GIT_DB) # connecting
@@ -44,6 +51,36 @@ def getSubjectMatches():
 	# 		no_match.write(i+"\n")
 
 
+def getLineMatches():
+	readPW()
+
+
+
+def readPW():
+	with open(PATCHES_PICKLED) as f:
+		patches = pickle.load(f)
+		for i in patches:
+			print i, patches[i]["author"]
+			print patches[i]["files"]
+
+
+			# CREATING FILE BASED DICT {filePath : pwid}
+			for j in patches[i]["files"]:
+				if j not in PATCH_FILE_MAP:
+					PATCH_FILE_MAP[j] = []
+				PATCH_FILE_MAP[j].append(i)
+
+	print PATCH_FILE_MAP
+	print len(PATCH_FILE_MAP)
+
+
+
+
+
+
 
 if __name__ == '__main__':
-	getSubjectMatches()
+	# getSubjectMatches()
+
+
+	getLineMatches()
