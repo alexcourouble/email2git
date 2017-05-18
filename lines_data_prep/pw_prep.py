@@ -2,6 +2,8 @@
 how to get the data from db:
 mysql -u gitmine -p -h 172.30.200.1 KORG_PATCHWORK -e "select id, submitter_id, content from patchwork_patch where date > '2017-01-01';" > patches_short.txt
 
+mysql -u gitmine -p -h 172.30.200.1 KORG_PATCHWORK -e "select id, submitter_id, content from patchwork_patch where date > '2016-10-01';" > patches_short.txt
+
 This script will go through the output from the wuery and create a lighter file containing the info required for the line-based matching.
 
 
@@ -11,7 +13,7 @@ import cPickle as pickle
 # except:
 #     import pickle
 
-INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short.txt'
+INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short16.txt'
 NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
 
 OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED.txt'
@@ -44,6 +46,8 @@ def getPeople():
 
 
 def readDataFile():
+	global PATCHES
+	global PEOPLE
 	# limit = 0
 	with open(INPUT_FILE_PATH) as f:
 		for i in f:
@@ -52,7 +56,8 @@ def readDataFile():
 
 			# data points:
 			pwid = split[0]
-			if split[1] in PEOPLE: author = PEOPLE[split[1]]
+			if split[1] in PEOPLE: 
+				author = PEOPLE[split[1]]
 			files = []
 			lines = []
 
