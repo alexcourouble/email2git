@@ -12,18 +12,19 @@ import re
 import cPickle as pickle
 
 class Commit:
-	def __innit__(self,cid,name,email,lines):
+	def __innit__(self,cid,name,email,lines,time):
 		self.cid = cid
 		self.name = name
 		self.email = email
 		self.lines = lines
+		self.time = time
 
 
 INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
 INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
 
 OUTPUT_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt"
-OUTPUT_COMMITS = "/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED.txt"
+OUTPUT_COMMITS = "/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt"
 
 COMMIT_FILE_MAP = {}
 
@@ -46,6 +47,7 @@ def readCommits():
 		cid = ""
 		authorName = ""
 		authorEmail = ""
+		time = ""
 		lines = []
 
 		for i in f:
@@ -54,12 +56,13 @@ def readCommits():
 				# submit previously found data
 				if cid != "":
 					# COMMITS[cid] = Commit(cid,authorName,authorEmail,lines)
-					COMMITS[cid] = {"name":authorName,"email":authorEmail,"lines":lines}
+					COMMITS[cid] = {"name":authorName,"email":authorEmail,"lines":lines,"time":time}
 				# create next commit and reset LINES
 				split = line.split(",")
 				cid = split[0]
 				authorName = split[1]
 				authorEmail = split[2]
+				time = split[3]
 				lines = []
 			elif line.startswith("+++") or line.startswith("---"):
 				pass
