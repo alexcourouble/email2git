@@ -13,20 +13,21 @@ import cPickle as pickle
 # except:
 #     import pickle
 
-INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short16.txt'
+INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short_time.txt'
 NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
 
-OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED.txt'
+OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
 
 PATCHES = {}
 PEOPLE = {}
 
 
 class Patch:
-	def __init__(self, pwid, author, files, lines):
+	def __init__(self, pwid, author, files, time, lines):
 		self.pwid = pwid
 		self.author = author
 		self.files = files
+		self.time = time
 		self.lines = lines
 
 
@@ -53,26 +54,28 @@ def readDataFile():
 		for i in f:
 			# limit += 1
 			split = i.split("\t")
+			# print split
+			if len(split) > 1:
+				# data points:
+				pwid = split[0]
+				if split[1] in PEOPLE: 
+					author = PEOPLE[split[1]]
+				time = split[2]
+				files = []
+				lines = []
 
-			# data points:
-			pwid = split[0]
-			if split[1] in PEOPLE: 
-				author = PEOPLE[split[1]]
-			files = []
-			lines = []
+				a = 'h'
+				for j in split[3].split("\\n"):
+					if j.startswith("+++"): # get file name
+							files.append(j.replace("+++ b/",""))
+					elif j.startswith("---"): 
+						pass
+					elif j.startswith("+") or j.startswith("-"):
+						lines.append(j)
 
-			a = 'h'
-			for j in split[2].split("\\n"):
-				if j.startswith("+++"): # get file name
-						files.append(j.replace("+++ b/",""))
-				elif j.startswith("---"): 
-					pass
-				elif j.startswith("+") or j.startswith("-"):
-					lines.append(j)
+				PATCHES[pwid] = Patch(pwid, author, files, time, lines)
 
-			PATCHES[pwid] = Patch(pwid, author, files, lines)
-
-			# if limit == 20: break
+				# if limit == 20: break
 
 
 if __name__ == '__main__':
@@ -85,6 +88,7 @@ if __name__ == '__main__':
 		out[i] = {}
 		out[i]["lines"] = PATCHES[i].lines
 		out[i]["files"] = PATCHES[i].files
+		out[i]["time"] = PATCHES[i].time
 		out[i]["author"] = PATCHES[i].author.email
 		# print PATCHES[i].pwid
 		# print PATCHES[i].files
