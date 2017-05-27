@@ -71,18 +71,18 @@ def getSubjectMatches():
 	# 		if count == 0: notMatched.append(i)
 
 	for i in gitCommits:
-			string = '%'+gitCommits[i][1]+'%'
-			count = 0
-			for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
-				# print str(j[0])+','+i
-				if i not in subjectMatches:
-					subjectMatches[i] = set([])
-				subjectMatches[i].add(str(j[0]))
-				MATCHED_PWID.add(str(j[0]))
-				MATCHED_CID.add(i)
-				count += 1
-				subjectMatchesCount += 1
-			if count == 0: notMatched.append(i)
+		string = '%'+gitCommits[i][1]+'%'
+		count = 0
+		for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
+			# print str(j[0])+','+i
+			if i not in subjectMatches:
+				subjectMatches[i] = set([])
+			subjectMatches[i].add(str(j[0]))
+			MATCHED_PWID.add(str(j[0]))
+			MATCHED_CID.add(i)
+			count += 1
+			subjectMatchesCount += 1
+		if count == 0: notMatched.append(i)
 
 	# printing remaining cids
 	connPW.close()
@@ -99,8 +99,8 @@ def getSubjectMatches():
 def getLineMatches():
 	readPW()
 	readGit()
-	doAuthMapMatching()
-	doFileMapMatching()
+	# doAuthMapMatching()
+	# doFileMapMatching()
 	doBruteMatching()
 
 
@@ -216,6 +216,7 @@ def compareDiffs(cid,pwid, threshold):
 		doCheck = False
 
 	if doCheck:
+		# print 'commits[cid]["time"],patches[pwid]["time"]', commits[cid]["time"], patches[pwid]["time"]
 		if commits[cid]["time"] < patches[pwid]["time"]:
 			doCheck = False
 
@@ -225,7 +226,7 @@ def compareDiffs(cid,pwid, threshold):
 		if ratio > threshold:
 			MATCHED_CID.add(cid)
 			MATCHED_PWID.add(pwid)
-			# print cid, pwid, ratio
+			print cid, pwid, ratio
 			if cid not in lineMatches:
 				lineMatches[cid] = set([])
 			lineMatches[cid].add(pwid)
@@ -236,7 +237,7 @@ def compareDiffs(cid,pwid, threshold):
 if __name__ == '__main__':
 	start = time.time()
 
-	getSubjectMatches()
+	# getSubjectMatches()
 	getLineMatches()
 
 	print "MATCHED_PWID:", len(MATCHED_PWID)
@@ -251,8 +252,8 @@ if __name__ == '__main__':
 	print "Created in", time.time() - start
 
 
-	with open("subjectMatches.txt") as f:
-		f.write(pickle.dumps(subjectMatches))
+	# with open("subjectMatches.txt") as f:
+	# 	f.write(pickle.dumps(subjectMatches))
 
-	with open("lineMatches.txt") as f:
-		f.write(pickle.dumps(lineMatches))
+	# with open("lineMatches.txt") as f:
+	# 	f.write(pickle.dumps(lineMatches))
