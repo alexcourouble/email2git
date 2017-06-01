@@ -19,6 +19,7 @@ class Commit:
 		self.lines = lines
 		self.time = time
 
+MATCHED_CID_OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
 
 INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
 INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
@@ -37,9 +38,11 @@ def readCIDMap():
 			line = i.strip("\n")
 			if re.match(r'\b[0-9a-f]{40}\b', line):
 				currentCommit = line[:40]
-				COMMIT_FILE_MAP[currentCommit] = []
+				if currentCommit not in MATCHED_CID:
+					COMMIT_FILE_MAP[currentCommit] = []
 			else:
-				COMMIT_FILE_MAP[currentCommit].append(line)
+				if currentCommit in COMMIT_FILE_MAP:
+					COMMIT_FILE_MAP[currentCommit].append(line)
 
 
 def readCommits():
@@ -54,7 +57,7 @@ def readCommits():
 			line = i.strip("\n")
 			if re.match(r'\b[0-9a-f]{40}\b', line):
 				# submit previously found data
-				if cid != "":
+				if cid != "" and cid not in MATCHED_CID:
 					# COMMITS[cid] = Commit(cid,authorName,authorEmail,lines)
 					COMMITS[cid] = {"name":authorName,"email":authorEmail,"lines":lines,"time":time}
 				# create next commit and reset LINES
@@ -73,6 +76,11 @@ def readCommits():
 
 
 if __name__ == '__main__':
+	# opening matched cid set from subject matching
+	with open(MATCHED_CID_OUTPUT) as f:
+		MATCHED_CID = pickle.load(f)
+		print "Read", len(MATCHED_CID), "subject matched cid. Type:" , type(MATCHED_CID)
+
 	readCIDMap()
 	readCommits()
 

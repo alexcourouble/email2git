@@ -13,6 +13,8 @@ import cPickle as pickle
 # except:
 #     import pickle
 
+MATCHED_PWID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_pwid_pickled.txt'
+
 INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short_time.txt'
 NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
 
@@ -64,21 +66,28 @@ def readDataFile():
 				files = []
 				lines = []
 
-				a = 'h'
-				for j in split[3].split("\\n"):
-					if j.startswith("+++"): # get file name
-							files.append(j.replace("+++ b/",""))
-					elif j.startswith("---"): 
-						pass
-					elif j.startswith("+") or j.startswith("-"):
-						lines.append(j)
+				if pwid not in MATCHED_PWID:
+					a = 'h'
+					for j in split[3].split("\\n"):
+						if j.startswith("+++"): # get file name
+								files.append(j.replace("+++ b/",""))
+						elif j.startswith("---"): 
+							pass
+						elif j.startswith("+") or j.startswith("-"):
+							lines.append(j)
 
-				PATCHES[pwid] = Patch(pwid, author, files, time, lines)
+					PATCHES[pwid] = Patch(pwid, author, files, time, lines)
 
 				# if limit == 20: break
 
 
 if __name__ == '__main__':
+	# opening matched pwid set from subject matching
+	with open(MATCHED_PWID_INPUT) as f:
+		MATCHED_PWID = pickle.load(f)
+		print "Read", len(MATCHED_PWID), "subject matched PWID. Type:" , type(MATCHED_PWID)
+
+
 	getPeople()
 	readDataFile()
 

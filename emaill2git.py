@@ -1,16 +1,10 @@
 """
-
 Author: Alex Courouble <alex.courouble@gmail.com>
 """
 import sqlite3
 import cPickle as pickle
 import difflib
 import time
-
-# SUBJECT
-PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
-GIT_DB = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
-OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/SUBJECT_OUTPUT.txt'
 
 # LINES
 PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
@@ -41,68 +35,15 @@ MATCHED_PWID = set([])
 
 notMatched = []
 
-def getSubjectMatches():
-	print "Finding subject matches"
 
-	global subjectMatches
-	global subjectMatchesCount
-	global notMatched
-	connGIT = sqlite3.connect(GIT_DB) # connecting
-	connGIT.text_factory = str
-	cg = connGIT.cursor() #creating cursor
-	gitCommits = {}
-	for row in cg.execute('select * from subject'):
-		gitCommits[row[0]] = (row[1],row[2])
-	connGIT.close()
-
-	 # list containing all cids that weren't matched
-	connPW = sqlite3.connect(PW_DB) # connecting
-	connPW.text_factory = str
-	cp = connPW.cursor() # creating cursor
-
-	# with open(OUTPUT,"w") as matches: # opening file for writting subject matches
-	# 	for i in gitCommits:
-	# 		string = '%'+gitCommits[i][1]+'%'
-	# 		count = 0
-	# 		for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
-	# 			# print str(j[0])+','+i
-	# 			matches.write(str(j[0])+','+i+'\n')
-	# 			count += 1
-	# 		if count == 0: notMatched.append(i)
-
-	for i in gitCommits:
-		string = '%'+gitCommits[i][1]+'%'
-		count = 0
-		for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
-			# print str(j[0])+','+i
-			if i not in subjectMatches:
-				subjectMatches[i] = set([])
-			subjectMatches[i].add(str(j[0]))
-			MATCHED_PWID.add(str(j[0]))
-			MATCHED_CID.add(i)
-			count += 1
-			subjectMatchesCount += 1
-		if count == 0: notMatched.append(i)
-
-	# printing remaining cids
-	connPW.close()
-
-	# for i in subjectMatches:
-	# 	print i, subjectMatches[i]
-	# print len(subjectMatches)
-		
-	# with open(OUTPUT,"w") as no_match:
-	# 	for i in notMatched:
-	# 		no_match.write(i+"\n")
 
 
 def getLineMatches():
 	readPW()
 	readGit()
-	# doAuthMapMatching()
-	# doFileMapMatching()
+	doAuthMapMatching()
+	doFileMapMatching()
 	doBruteMatching()
-
 
 
 def readPW():
@@ -140,7 +81,7 @@ def readGit():
 	with open(COMMITS_PICKLED) as f:
 		print "Reading commit data"
 		commits = pickle.load(f)
-		print "Found data for:", len(commits)
+		print "Found:", len(commits), "commits"
 
 	# creating cid -> author email map.
 	for i in commits:
@@ -148,6 +89,8 @@ def readGit():
 
 
 def doAuthMapMatching():
+	global MATCHED_PWID
+	global MATCHED_CID
 	print "Starting author map based line matches"
 	# iterate through the author map
 	countNoAuth = 0
@@ -157,19 +100,20 @@ def doAuthMapMatching():
 			for j in PATCH_AUTHOR_MAP[COMMIT_AUTHOR_MAP[i]]:
 				compareDiffs(i,j,MATCH_RATIO)
 		else:
-			print "not found: ",COMMIT_AUTHOR_MAP[i]
+			# print "not found: ",COMMIT_AUTHOR_MAP[i]
 			countNoAuth += 1
 	print "not found: ", countNoAuth
-	print "COMMIT_AUTHOR_MAP", len(COMMIT_AUTHOR_MAP)
-	print "PATCH_AUTHOR_MAP", len(PATCH_AUTHOR_MAP)
-
-
+	print "len(MATCHED_CID)", len(MATCHED_CID)
+	print "len(MATCHED_PWID)", len(MATCHED_PWID)
 
 
 
 
 def doFileMapMatching():
+	global MATCHED_PWID
+	global MATCHED_CID
 	print "Starting file map based line matches"
+	countNoFile = 0
 	# iterate through cid-file map
 	for i in COMMIT_FILE_MAP:
 		# if i in notMatched: # taking only commits that have NOT been matched by subject
@@ -182,8 +126,12 @@ def doFileMapMatching():
 					if i not in MATCHED_CID and j not in MATCHED_PWID:
 						compareDiffs(i,k,MATCH_RATIO)
 			else:
-				print j ,"NOT FOUND"
+				# print j ,"NOT FOUND"
+				countNoFile += 1
 
+	print "not found: ", countNoFile
+	print "len(MATCHED_CID)", len(MATCHED_CID)
+	print "len(MATCHED_PWID)", len(MATCHED_PWID)
 
 
 def doBruteMatching():
@@ -195,7 +143,6 @@ def doBruteMatching():
 			for j in patches:
 				if j not in MATCHED_PWID:
 					compareDiffs(i,j,.5)
-
 
 
 def compareDiffs(cid,pwid, threshold):
@@ -226,18 +173,16 @@ def compareDiffs(cid,pwid, threshold):
 		if ratio > threshold:
 			MATCHED_CID.add(cid)
 			MATCHED_PWID.add(pwid)
-			print cid, pwid, ratio
+			# print cid, pwid, ratio
 			if cid not in lineMatches:
 				lineMatches[cid] = set([])
 			lineMatches[cid].add(pwid)
 
 
 
-
 if __name__ == '__main__':
 	start = time.time()
 
-	# getSubjectMatches()
 	getLineMatches()
 
 	print "MATCHED_PWID:", len(MATCHED_PWID)
@@ -250,7 +195,6 @@ if __name__ == '__main__':
 	print "len(commits)",len(commits)
 
 	print "Created in", time.time() - start
-
 
 	# with open("subjectMatches.txt") as f:
 	# 	f.write(pickle.dumps(subjectMatches))
