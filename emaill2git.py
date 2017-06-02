@@ -55,9 +55,10 @@ def readPW():
 		for i in patches:
 			# CREATING FILE BASED DICT {filePath : pwid}
 			for j in patches[i]["files"]:
-				if j not in PATCH_FILE_MAP:
-					PATCH_FILE_MAP[j] = []
-				PATCH_FILE_MAP[j].append(i)
+				filename = j
+				if filename not in PATCH_FILE_MAP:
+					PATCH_FILE_MAP[filename] = []
+				PATCH_FILE_MAP[filename].append(i)
 
 	for i in patches:
 		auth = patches[i]["author"]
@@ -92,6 +93,11 @@ def doAuthMapMatching():
 	global MATCHED_PWID
 	global MATCHED_CID
 	print "Starting author map based line matches"
+
+
+
+
+
 	# iterate through the author map
 	countNoAuth = 0
 	for i in COMMIT_AUTHOR_MAP:
@@ -102,6 +108,7 @@ def doAuthMapMatching():
 		else:
 			# print "not found: ",COMMIT_AUTHOR_MAP[i]
 			countNoAuth += 1
+	print "number of commits in author map:", len(COMMIT_AUTHOR_MAP)
 	print "not found: ", countNoAuth
 	print "len(MATCHED_CID)", len(MATCHED_CID)
 	print "len(MATCHED_PWID)", len(MATCHED_PWID)
@@ -140,7 +147,7 @@ def doBruteMatching():
 	global MATCHED_CID
 	for i in commits:
 		if i not in MATCHED_CID:
-			for j in patches:
+			for j in patches.keys():
 				if j not in MATCHED_PWID:
 					compareDiffs(i,j,.5)
 
@@ -148,6 +155,8 @@ def doBruteMatching():
 def compareDiffs(cid,pwid, threshold):
 	global MATCHED_PWID
 	global MATCHED_CID
+	global commits
+	global patches
 	doCheck = True
 
 	# git diff:commits[cid]["lines"]
@@ -159,13 +168,15 @@ def compareDiffs(cid,pwid, threshold):
 	if pwid in patches:
 		pwDiff = patches[pwid]["lines"]
 	else:
-		print pwid
+		# print pwid
 		doCheck = False
 
 	if doCheck:
 		# print 'commits[cid]["time"],patches[pwid]["time"]', commits[cid]["time"], patches[pwid]["time"]
-		if commits[cid]["time"] < patches[pwid]["time"]:
-			doCheck = False
+		# print commits[cid]["authorTime"], patches[pwid]["time"], commits[cid]["commitTime"]
+		if patches[pwid]["time"] != "NULL":
+			if int(commits[cid]["commitTime"]) < int(patches[pwid]["time"]) and int(patches[pwid]["time"]) > int(commits[cid]["authorTime"]) - 86400:
+				doCheck = False
 
 	if doCheck:
 		sm=difflib.SequenceMatcher(None,gitDiff,pwDiff)
@@ -173,10 +184,15 @@ def compareDiffs(cid,pwid, threshold):
 		if ratio > threshold:
 			MATCHED_CID.add(cid)
 			MATCHED_PWID.add(pwid)
+			if len(MATCHED_CID) % 10 == 0:
+				print len(MATCHED_CID)
 			# print cid, pwid, ratio
 			if cid not in lineMatches:
 				lineMatches[cid] = set([])
 			lineMatches[cid].add(pwid)
+
+			# remove and pwid from the dict
+			del patches[pwid]
 
 
 
@@ -191,8 +207,8 @@ if __name__ == '__main__':
 	# print "Subject commit matched: ", len(subjectMatches)
 	# print "lines commit matched: ", len(lineMatches)
 	# print "subject commits total: ", subjectMatchesCount
-	print "len(patches)",len(patches)
-	print "len(commits)",len(commits)
+	print "len(patches)", len(patches)
+	print "len(commits)", len(commits)
 
 	print "Created in", time.time() - start
 

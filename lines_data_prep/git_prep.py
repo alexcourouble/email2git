@@ -5,19 +5,20 @@ To get files touched by commits:
 	log --no-merges --name-only --pretty=oneline --after="2017-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
 
 To get the commit diffs:
-	git log -p --no-merges --pretty=format:"%H,%an,%ae" --after="2017-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt
+	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2017-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt
 
 """
 import re
 import cPickle as pickle
 
 class Commit:
-	def __innit__(self,cid,name,email,lines,time):
+	def __innit__(self,cid,name,email,lines,commitTime, authorTime):
 		self.cid = cid
 		self.name = name
 		self.email = email
 		self.lines = lines
-		self.time = time
+		self.commitTime = commitTime
+		self.authorTime = authorTime
 
 MATCHED_CID_OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
 
@@ -50,7 +51,8 @@ def readCommits():
 		cid = ""
 		authorName = ""
 		authorEmail = ""
-		time = ""
+		commitTime = ""
+		authorTime = ""
 		lines = []
 
 		for i in f:
@@ -59,20 +61,19 @@ def readCommits():
 				# submit previously found data
 				if cid != "" and cid not in MATCHED_CID:
 					# COMMITS[cid] = Commit(cid,authorName,authorEmail,lines)
-					COMMITS[cid] = {"name":authorName,"email":authorEmail,"lines":lines,"time":time}
+					COMMITS[cid] = {"name":authorName,"email":authorEmail,"lines":lines,"commitTime":commitTime,"authorTime":authorTime}
 				# create next commit and reset LINES
-				split = line.split(",")
+				split = line.split(";")
 				cid = split[0]
 				authorName = split[1]
 				authorEmail = split[2]
-				time = split[3]
+				commitTime = split[3]
+				authorTime = split[4]
 				lines = []
 			elif line.startswith("+++") or line.startswith("---"):
 				pass
 			elif line.startswith("+") or line.startswith("-"):
 				lines.append(line)
-
-
 
 
 if __name__ == '__main__':
