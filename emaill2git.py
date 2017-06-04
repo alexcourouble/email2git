@@ -11,9 +11,12 @@ PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICK
 COMMITS_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt'
 COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt'
 
+DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+
 MATCH_RATIO = .2
 
 PATCH_FILE_MAP = {}
+PATCH_FILE_MAP_SHORT = {}
 COMMIT_FILE_MAP = {}
 
 PATCH_AUTHOR_MAP = {}
@@ -60,6 +63,11 @@ def readPW():
 					PATCH_FILE_MAP[filename] = []
 				PATCH_FILE_MAP[filename].append(i)
 
+				name_only = filename.split("/")[-1]
+				if name_only not in PATCH_FILE_MAP_SHORT:
+					PATCH_FILE_MAP_SHORT[name_only] = []
+				PATCH_FILE_MAP_SHORT[name_only].append(i)
+
 	for i in patches:
 		auth = patches[i]["author"]
 		if auth not in PATCH_AUTHOR_MAP:
@@ -93,11 +101,6 @@ def doAuthMapMatching():
 	global MATCHED_PWID
 	global MATCHED_CID
 	print "Starting author map based line matches"
-
-
-
-
-
 	# iterate through the author map
 	countNoAuth = 0
 	for i in COMMIT_AUTHOR_MAP:
@@ -114,8 +117,6 @@ def doAuthMapMatching():
 	print "len(MATCHED_PWID)", len(MATCHED_PWID)
 
 
-
-
 def doFileMapMatching():
 	global MATCHED_PWID
 	global MATCHED_CID
@@ -128,11 +129,16 @@ def doFileMapMatching():
 		for j in COMMIT_FILE_MAP[i]: 
 			# find all PWID that touched that file:
 			# Have to check if file is in FILE-PWID map
+			name_only = j.split("/")[-1]
 			if j in PATCH_FILE_MAP:
 				for k in PATCH_FILE_MAP[j]:
-					if i not in MATCHED_CID and j not in MATCHED_PWID:
+					if i not in MATCHED_CID and k not in MATCHED_PWID:
 						compareDiffs(i,k,MATCH_RATIO)
-			else:
+			elif name_only in PATCH_FILE_MAP_SHORT:
+				for k in PATCH_FILE_MAP_SHORT[name_only]:
+					if i not in MATCHED_CID and k not in MATCHED_PWID:
+						compareDiffs(i,k,MATCH_RATIO)
+
 				# print j ,"NOT FOUND"
 				countNoFile += 1
 
@@ -145,11 +151,21 @@ def doBruteMatching():
 	print "Starting brute force matching on remaining of matches"
 	global MATCHED_PWID
 	global MATCHED_CID
+	connPW = sqlite3.connect(DB_PATH) # connecting
+	connPW.text_factory = str
+	cp = connPW.cursor() # creating cursor
 	for i in commits:
 		if i not in MATCHED_CID:
-			for j in patches.keys():
-				if j not in MATCHED_PWID:
-					compareDiffs(i,j,.5)
+			commitTime = commits[i]["commitTime"]
+			authorTime = commits[i]["authorTime"]
+			count = 0 
+			for j in cp.execute("select pwid from lines where ? < date and date < ?",(authorTime,commitTime)):
+				count += 1
+				if j not in MATCHED_PWID and j[0] in patches:
+					print j[0], authorTime, commitTime
+					print patches[j[0]]["time"]
+					compareDiffs(i,j[0],.5)
+			# print count
 
 
 def compareDiffs(cid,pwid, threshold):

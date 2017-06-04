@@ -10,6 +10,7 @@ This script will go through the output from the wuery and create a lighter file 
 """
 # try:
 import cPickle as pickle
+import sqlite3
 # except:
 #     import pickle
 
@@ -19,6 +20,7 @@ INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/pat
 NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
 
 OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
+DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
 PATCHES = {}
 PEOPLE = {}
@@ -92,6 +94,7 @@ if __name__ == '__main__':
 	readDataFile()
 
 	out = {}
+	table = []
 	for i in PATCHES:
 
 		out[i] = {}
@@ -99,13 +102,23 @@ if __name__ == '__main__':
 		out[i]["files"] = PATCHES[i].files
 		out[i]["time"] = PATCHES[i].time
 		out[i]["author"] = PATCHES[i].author.email
-		# print PATCHES[i].pwid
-		# print PATCHES[i].files
-		# print PATCHES[i].author.email
+
+		table.append((int(i),PATCHES[i].time))
+		
 
 	# print out
 	with open(OUTPUT_PATH,"w") as f:
 		f.write(pickle.dumps(out))
+
+	# creating db for faster pwid lookup
+
+	conn = sqlite3.connect(DB_PATH) # connecting
+	conn.text_factory = str
+	c = conn.cursor() #creating cursor
+	c.execute('''create table lines(pwid int, date date)''') # creating the table
+	c.executemany('INSERT INTO lines VALUES (?,?)', table) # importing all the data
+	conn.commit()
+	conn.close() # we're done!
 
 
 
