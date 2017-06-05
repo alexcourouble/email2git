@@ -13,7 +13,7 @@ COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLE
 
 DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
-MATCH_RATIO = .2
+MATCH_RATIO = .15
 
 PATCH_FILE_MAP = {}
 PATCH_FILE_MAP_SHORT = {}
@@ -45,8 +45,11 @@ def getLineMatches():
 	readPW()
 	readGit()
 	doAuthMapMatching()
+	createFilePathMap()
 	doFileMapMatching()
-	doBruteMatching()
+	createFileNameMap()
+	doFileNameMapMatching()
+	# doBruteMatching()
 
 
 def readPW():
@@ -55,18 +58,6 @@ def readPW():
 	with open(PATCHES_PICKLED) as f:
 		print "Reading patches data"
 		patches = pickle.load(f)
-		for i in patches:
-			# CREATING FILE BASED DICT {filePath : pwid}
-			for j in patches[i]["files"]:
-				filename = j
-				if filename not in PATCH_FILE_MAP:
-					PATCH_FILE_MAP[filename] = []
-				PATCH_FILE_MAP[filename].append(i)
-
-				name_only = filename.split("/")[-1]
-				if name_only not in PATCH_FILE_MAP_SHORT:
-					PATCH_FILE_MAP_SHORT[name_only] = []
-				PATCH_FILE_MAP_SHORT[name_only].append(i)
 
 	for i in patches:
 		auth = patches[i]["author"]
@@ -97,9 +88,12 @@ def readGit():
 		COMMIT_AUTHOR_MAP[i] = commits[i]["email"]
 
 
+
+
 def doAuthMapMatching():
 	global MATCHED_PWID
 	global MATCHED_CID
+	print "========================================"
 	print "Starting author map based line matches"
 	# iterate through the author map
 	countNoAuth = 0
@@ -117,9 +111,23 @@ def doAuthMapMatching():
 	print "len(MATCHED_PWID)", len(MATCHED_PWID)
 
 
+
+
+def createFilePathMap():
+	for i in patches:
+		# CREATING FILE BASED DICT {filePath : pwid}
+		for j in patches[i]["files"]:
+			filename = j
+			if filename not in PATCH_FILE_MAP:
+				PATCH_FILE_MAP[filename] = []
+			PATCH_FILE_MAP[filename].append(i)
+
+
+
 def doFileMapMatching():
 	global MATCHED_PWID
 	global MATCHED_CID
+	print "========================================"
 	print "Starting file map based line matches"
 	countNoFile = 0
 	# iterate through cid-file map
@@ -138,13 +146,55 @@ def doFileMapMatching():
 				for k in PATCH_FILE_MAP_SHORT[name_only]:
 					if i not in MATCHED_CID and k not in MATCHED_PWID:
 						compareDiffs(i,k,MATCH_RATIO)
-
+			else:
 				# print j ,"NOT FOUND"
 				countNoFile += 1
 
 	print "not found: ", countNoFile
 	print "len(MATCHED_CID)", len(MATCHED_CID)
 	print "len(MATCHED_PWID)", len(MATCHED_PWID)
+
+
+
+def createFileNameMap():
+	for i in patches:
+		# CREATING FILE BASED DICT {filePath : pwid}
+		for j in patches[i]["files"]:
+			name_only = j.split("/")[-1]
+			if name_only not in PATCH_FILE_MAP_SHORT:
+				PATCH_FILE_MAP_SHORT[name_only] = []
+			PATCH_FILE_MAP_SHORT[name_only].append(i)
+
+
+def doFileNameMapMatching():
+	global MATCHED_PWID
+	global MATCHED_CID
+	print "========================================"
+	print "Starting filename map based line matches"
+	countNoFile = 0
+	# iterate through cid-file map
+	for i in COMMIT_FILE_MAP:
+		print i
+		# if i in notMatched: # taking only commits that have NOT been matched by subject
+		# for all the files j touched by commit i
+		for j in COMMIT_FILE_MAP[i]: 
+			# find all PWID that touched that file:
+			# Have to check if file is in FILE-PWID map
+			name_only = j.split("/")[-1]
+			if name_only in PATCH_FILE_MAP_SHORT and name_only not in ["Kconfig","Makefile","Kbuild"]:
+				print name_only
+				print PATCH_FILE_MAP_SHORT[name_only]
+				for k in PATCH_FILE_MAP_SHORT[name_only]:
+					if i not in MATCHED_CID and k not in MATCHED_PWID:
+						compareDiffs(i,k,MATCH_RATIO)
+			else:
+				print name_only ,"NOT FOUND"
+				countNoFile += 1
+
+	print "not found: ", countNoFile
+	print "len(MATCHED_CID)", len(MATCHED_CID)
+	print "len(MATCHED_PWID)", len(MATCHED_PWID)
+
 
 
 def doBruteMatching():
@@ -166,6 +216,9 @@ def doBruteMatching():
 					print patches[j[0]]["time"]
 					compareDiffs(i,j[0],.5)
 			# print count
+
+
+
 
 
 def compareDiffs(cid,pwid, threshold):
@@ -200,8 +253,8 @@ def compareDiffs(cid,pwid, threshold):
 		if ratio > threshold:
 			MATCHED_CID.add(cid)
 			MATCHED_PWID.add(pwid)
-			if len(MATCHED_CID) % 10 == 0:
-				print len(MATCHED_CID)
+			# if len(MATCHED_CID) % 10 == 0:
+			# 	print len(MATCHED_CID)
 			# print cid, pwid, ratio
 			if cid not in lineMatches:
 				lineMatches[cid] = set([])
