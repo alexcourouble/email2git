@@ -181,7 +181,7 @@ def doFileNameMapMatching():
 			# find all PWID that touched that file:
 			# Have to check if file is in FILE-PWID map
 			name_only = j.split("/")[-1]
-			if name_only in PATCH_FILE_MAP_SHORT and name_only not in ["Kconfig","Makefile","Kbuild"]:
+			if name_only in PATCH_FILE_MAP_SHORT and name_only not in ["Kconfig","Makefile","Kbuild","MAINTAINERS"]:
 				print name_only
 				print PATCH_FILE_MAP_SHORT[name_only]
 				for k in PATCH_FILE_MAP_SHORT[name_only]:
