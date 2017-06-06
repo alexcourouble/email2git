@@ -5,7 +5,7 @@ except:
     print "Could not import cPickle. Using regular pickle implementation. Expect performance loss."
 
 import sqlite3
-
+import sys
 
 
 PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
@@ -36,16 +36,6 @@ def getSubjectMatches():
 	connPW.text_factory = str
 	cp = connPW.cursor() # creating cursor
 
-	# with open(OUTPUT,"w") as matches: # opening file for writting subject matches
-	# 	for i in gitCommits:
-	# 		string = '%'+gitCommits[i][1]+'%'
-	# 		count = 0
-	# 		for j in cp.execute("""select * from subject where subject like ?;""", (string,)):
-	# 			# print str(j[0])+','+i
-	# 			matches.write(str(j[0])+','+i+'\n')
-	# 			count += 1
-	# 		if count == 0: notMatched.append(i)
-
 	for i in gitCommits:
 		string = '%'+gitCommits[i][1]+'%'
 		count = 0
@@ -60,6 +50,15 @@ def getSubjectMatches():
 	# printing remaining cids
 	connPW.close()
 
+
+
+
+
+if sys.argv > 1:
+	if "test" in sys.argv:
+		OUTPUT ='/Users/alexandrecourouble/Desktop/email2git_data/test_results/SUBJECT_OUTPUT.txt'
+
+
 getSubjectMatches()
 
 print "Matched ", len(MATCHED_CID), "commits"
@@ -73,4 +72,9 @@ with open(MATCHED_CID_OUTPUT, "w") as f:
 # matched pwid:
 with open(MATCHED_PWID_OUTPUT, "w") as f:
 	f.write(pickle.dumps(MATCHED_PWID))
+
+
+# MATCHES
+with open(OUTPUT, "w") as f:
+	f.write(pickle.dumps(subjectMatches))
 

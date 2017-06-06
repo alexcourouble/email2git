@@ -5,6 +5,7 @@ import sqlite3
 import cPickle as pickle
 import difflib
 import time
+import sys
 
 # LINES
 PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
@@ -267,6 +268,11 @@ def compareDiffs(cid,pwid, threshold):
 
 if __name__ == '__main__':
 	start = time.time()
+
+
+	if sys.argv > 1:
+		if "test" in sys.argv:
+			OUTPUT ='/Users/alexandrecourouble/Desktop/email2git_data/test_results/LINES_OUTPUT.txt'
 
 	getLineMatches()
 

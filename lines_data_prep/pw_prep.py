@@ -11,6 +11,7 @@ This script will go through the output from the wuery and create a lighter file 
 # try:
 import cPickle as pickle
 import sqlite3
+import sys
 # except:
 #     import pickle
 
@@ -84,10 +85,15 @@ def readDataFile():
 
 
 if __name__ == '__main__':
-	# opening matched pwid set from subject matching
-	with open(MATCHED_PWID_INPUT) as f:
-		MATCHED_PWID = pickle.load(f)
-		print "Read", len(MATCHED_PWID), "subject matched PWID. Type:" , type(MATCHED_PWID)
+
+	if sys.argv > 1:
+		if "test" not in sys.argv:
+			# opening matched pwid set from subject matching
+			with open(MATCHED_PWID_INPUT) as f:
+				MATCHED_PWID = pickle.load(f)
+				print "Read", len(MATCHED_PWID), "subject matched PWID. Type:" , type(MATCHED_PWID)
+		elif "test" in sys.argv:
+			MATCHED_PWID = set([])
 
 
 	getPeople()

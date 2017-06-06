@@ -10,6 +10,7 @@ To get the commit diffs:
 """
 import re
 import cPickle as pickle
+import sys
 
 class Commit:
 	def __innit__(self,cid,name,email,lines,commitTime, authorTime):
@@ -20,7 +21,7 @@ class Commit:
 		self.commitTime = commitTime
 		self.authorTime = authorTime
 
-MATCHED_CID_OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
+MATCHED_CID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
 
 INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
 INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
@@ -77,10 +78,17 @@ def readCommits():
 
 
 if __name__ == '__main__':
-	# opening matched cid set from subject matching
-	with open(MATCHED_CID_OUTPUT) as f:
-		MATCHED_CID = pickle.load(f)
-		print "Read", len(MATCHED_CID), "subject matched cid. Type:" , type(MATCHED_CID)
+
+	if sys.argv > 1:
+		if "test" not in sys.argv:
+
+			# opening matched cid set from subject matching
+			with open(MATCHED_CID_INPUT) as f:
+				MATCHED_CID = pickle.load(f)
+				print "Read", len(MATCHED_CID), "subject matched cid. Type:" , type(MATCHED_CID)
+
+		elif "test" in sys.argv:
+			MATCHED_CID = set([])
 
 	readCIDMap()
 	readCommits()
