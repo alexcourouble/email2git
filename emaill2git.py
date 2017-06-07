@@ -14,7 +14,7 @@ COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLE
 
 DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
-MATCH_RATIO = .15
+MATCH_RATIO = .2
 
 PATCH_FILE_MAP = {}
 PATCH_FILE_MAP_SHORT = {}
@@ -290,5 +290,5 @@ if __name__ == '__main__':
 	# with open("subjectMatches.txt") as f:
 	# 	f.write(pickle.dumps(subjectMatches))
 
-	# with open("lineMatches.txt") as f:
-	# 	f.write(pickle.dumps(lineMatches))
+	with open(OUTPUT,"w") as f:
+		f.write(pickle.dumps(lineMatches))
