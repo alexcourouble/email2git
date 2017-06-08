@@ -15,13 +15,16 @@ import sys
 # except:
 #     import pickle
 
+# reading pwid that were already matched (no need to include them)
 MATCHED_PWID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_pwid_pickled.txt'
 
 INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short_time.txt'
 NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
+PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
 
 OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
 DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+
 
 PATCHES = {}
 PEOPLE = {}
@@ -37,18 +40,39 @@ class Patch:
 
 
 class People:
-	def __init__(self, pid, name, email):
+	def __init__(self, pid, name, email, personid):
 		self.pid = pid
 		self.name = name
 		self.email = email
+		self.personid = personid # personid found in DMG's people DB
 
 
 def getPeople():
+	unique_people_id_email = {}
+	unique_people_id_name = {}
+	# reading persons DB
+	conn = sqlite3.connect(PERSONS_DB)
+	c = conn.cursor()
+	for i in c.execute("SELECT personid, name, lcemail FROM persons"):
+		email = i[2].replace("<","").replace(">","")
+		unique_people_id_email[email] = i[0]
+		unique_people_id_name[i[1]] = i[0]
+	conn.close()
+
+
 	with open(NAME_MAP_PATH) as f:
 		for i in f:
+			personid = ""
 			split = i.strip("\n").split("\t")
-			# id, name, email
-			PEOPLE[split[0]] = People(split[0],split[2],split[1])
+			if split[1] in unique_people_id_email:
+				personid = unique_people_id_email[split[1]]
+			elif split[2] in unique_people_id_name:
+				personid = unique_people_id_name[split[2]]
+			else:
+				personid = split[1]
+
+			# id, name, email, personid
+			PEOPLE[split[0]] = People(split[0],split[2],split[1],personid)
 
 
 def readDataFile():
@@ -107,7 +131,7 @@ if __name__ == '__main__':
 		out[i]["lines"] = PATCHES[i].lines
 		out[i]["files"] = PATCHES[i].files
 		out[i]["time"] = PATCHES[i].time
-		out[i]["author"] = PATCHES[i].author.email
+		out[i]["author"] = PATCHES[i].author.personid
 
 		table.append((int(i),PATCHES[i].time))
 		

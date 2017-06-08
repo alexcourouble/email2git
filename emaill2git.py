@@ -14,7 +14,7 @@ COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLE
 
 DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
-MATCH_RATIO = .2
+MATCH_RATIO = .3
 
 PATCH_FILE_MAP = {}
 PATCH_FILE_MAP_SHORT = {}
@@ -86,7 +86,7 @@ def readGit():
 
 	# creating cid -> author email map.
 	for i in commits:
-		COMMIT_AUTHOR_MAP[i] = commits[i]["email"]
+		COMMIT_AUTHOR_MAP[i] = commits[i]["personid"]
 
 
 
@@ -217,9 +217,6 @@ def doBruteMatching():
 					print patches[j[0]]["time"]
 					compareDiffs(i,j[0],.5)
 			# print count
-
-
-
 
 
 def compareDiffs(cid,pwid, threshold):
