@@ -9,7 +9,7 @@ by Alex Courouble
 """
 import os
 import sys, sqlite3
-DB_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
+DB_PATH = '~/email2git_data/commit_subject.db'
 
 # getting data from stdin and storing it in a list of tuples before populating sqlite DB
 data = sys.stdin.read()
