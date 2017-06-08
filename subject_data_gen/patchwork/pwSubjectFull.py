@@ -13,12 +13,15 @@ DB_PATH = '/home-students/courouble/email2git_data/pwSubject_short.db'
 table = []
 
 with open(INPUT_FILE_PATH,"r") as s:
-	for i in s.read().split('\n'):
+	for i in s:
 		patchData = i.split("\t")
 		patchId = patchData[0] 
 		patchSubject =  patchData[1]
 		# print patchId,"	",patchSubject
 		table.append((patchId,patchSubject))
+
+if os.path.isfile(DB_PATH):
+	os.remove(DB_PATH)
 
 conn = sqlite3.connect(DB_PATH) # connecting
 conn.text_factory = str
