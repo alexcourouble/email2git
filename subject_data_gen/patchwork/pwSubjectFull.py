@@ -6,8 +6,8 @@ in PWDB: "select id, name from patchwork_patch"
 By Alex Courouble
 """
 import sqlite3
-INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/subject_short_pw.txt'
-DB_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
+INPUT_FILE_PATH = '/home-students/courouble/email2git_data/raw_data/subject_pw.txt'
+DB_PATH = '/home-students/courouble/email2git_data/pwSubject_short.db'
 
 
 table = []
