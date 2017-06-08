@@ -14,7 +14,7 @@ COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLE
 
 DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
-MATCH_RATIO = .3
+MATCH_RATIO = .4
 
 PATCH_FILE_MAP = {}
 PATCH_FILE_MAP_SHORT = {}
@@ -219,7 +219,7 @@ def doBruteMatching():
 			# print count
 
 
-def compareDiffs(cid,pwid, threshold):
+def compareDiffs(cid,pwid,threshold):
 	global MATCHED_PWID
 	global MATCHED_CID
 	global commits

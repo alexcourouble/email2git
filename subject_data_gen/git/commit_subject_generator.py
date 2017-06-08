@@ -7,6 +7,7 @@ git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-01} | pyt
 
 by Alex Courouble
 """
+import os
 import sys, sqlite3
 DB_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
 
@@ -19,6 +20,10 @@ for i in lines:
 	if len(split) < 4:
 		table.append(tuple(split))
 
+
+
+if os.path.isfile(DB_PATH):
+	os.remove(DB_PATH)
 
 
 # creating a connection to the DB and inputing the data
