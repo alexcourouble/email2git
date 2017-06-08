@@ -8,12 +8,12 @@ import sqlite3
 import sys
 
 
-PW_DB = '/Users/alexandrecourouble/Desktop/email2git_data/pwSubject_short.db'
-GIT_DB = '/Users/alexandrecourouble/Desktop/email2git_data/commit_subject.db'
-OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/SUBJECT_OUTPUT.txt'
+PW_DB = '/home-students/courouble/email2git_data/pwSubject_short.db'
+GIT_DB = '/home-students/courouble/email2git_data/commit_subject.db'
+OUTPUT = '/home-students/courouble/email2git_data/subject_ouput/SUBJECT_OUTPUT.txt'
 
-MATCHED_CID_OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
-MATCHED_PWID_OUTPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_pwid_pickled.txt'
+MATCHED_CID_OUTPUT = '/home-students/courouble/email2git_data/subject_ouput/matched_cid_pickled.txt'
+MATCHED_PWID_OUTPUT = '/home-students/courouble/email2git_data/subject_ouput/matched_pwid_pickled.txt'
 
 
 subjectMatches = {}
