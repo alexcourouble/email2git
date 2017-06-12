@@ -16,14 +16,26 @@ import sys
 #     import pickle
 
 # reading pwid that were already matched (no need to include them)
-MATCHED_PWID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_pwid_pickled.txt'
 
-INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short_time.txt'
-NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
-PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
 
-OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
-DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+# MATCHED_PWID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput_tmp/matched_pwid_pickled.txt'
+
+# INPUT_FILE_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/patches_short_time.txt'
+# NAME_MAP_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/raw_data/name_map_short.txt'
+# PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
+
+# OUTPUT_PATH = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
+# DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+
+
+MATCHED_PWID_INPUT = '/home-students/courouble/email2git_data/subject_ouput_tmp/matched_pwid_pickled.txt'
+
+INPUT_FILE_PATH = '/home-students/courouble/email2git_data/raw_data/patches_short_time.txt'
+NAME_MAP_PATH = '/home-students/courouble/email2git_data/raw_data/name_map_short.txt'
+PERSONS_DB = '/home-students/courouble/email2git_data/linux_persons.db'
+
+OUTPUT_PATH = '/home-students/courouble/email2git_data/PATCHES_PICKLED_test.txt'
+DB_PATH = "/home-students/courouble/email2git_data/lookupDB.db"
 
 
 PATCHES = {}
