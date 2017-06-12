@@ -28,9 +28,9 @@ MATCHED_CID_INPUT = '/home-students/courouble/email2git_data/subject_ouput_tmp/m
 # INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
 INPUT_CID_FILE_MAP = "/home-students/courouble/email2git_data/raw_data/git_file_map.txt"
 # INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
-INPUT_COMMIT_FILE = "/home-students/courouble/email2git_data/email2git_data/raw_data/commits_short.txt"
+INPUT_COMMIT_FILE = "/home-students/courouble/email2git_data/raw_data/commits_short.txt"
 # PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
-PERSONS_DB = '/home-students/courouble/email2git_data/email2git_data/linux_persons.db'
+PERSONS_DB = '/home-students/courouble/email2git_data/linux_persons.db'
 
 # OUTPUT_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt"
 OUTPUT_MAP = "/home-students/courouble/email2git_data/COMMIT_MAP_PICKLED.txt"
