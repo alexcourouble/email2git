@@ -2,10 +2,10 @@
 Reading the a customised git log output
 
 To get files touched by commits:
-	log --no-merges --name-only --pretty=oneline --after="2017-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
+	log --no-merges --name-only --pretty=oneline --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
 
 To get the commit diffs:
-	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2017-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt
+	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt
 
 """
 import re
@@ -22,14 +22,20 @@ class Commit:
 		self.commitTime = commitTime
 		self.authorTime = authorTime
 
-MATCHED_CID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
+# MATCHED_CID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
+MATCHED_CID_INPUT = '/home-students/courouble/email2git_data/subject_ouput_tmp/matched_cid_pickled.txt'
 
-INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
-INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
-PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
+# INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
+INPUT_CID_FILE_MAP = "/home-students/courouble/email2git_data/raw_data/git_file_map.txt"
+# INPUT_COMMIT_FILE = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/commits_short.txt"
+INPUT_COMMIT_FILE = "/home-students/courouble/email2git_data/email2git_data/raw_data/commits_short.txt"
+# PERSONS_DB = '/Users/alexandrecourouble/Desktop/email2git_data/linux_persons.db'
+PERSONS_DB = '/home-students/courouble/email2git_data/email2git_data/linux_persons.db'
 
-OUTPUT_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt"
-OUTPUT_COMMITS = "/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt"
+# OUTPUT_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt"
+OUTPUT_MAP = "/home-students/courouble/email2git_data/COMMIT_MAP_PICKLED.txt"
+# OUTPUT_COMMITS = "/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt"
+OUTPUT_COMMITS = "/home-students/courouble/email2git_data/COMMITS_PICKLED_test.txt"
 
 COMMIT_FILE_MAP = {}
 
