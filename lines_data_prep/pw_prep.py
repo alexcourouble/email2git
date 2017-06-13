@@ -99,7 +99,6 @@ def readDataFile():
 			if len(split) > 1:
 				# data points:
 				pwid = split[0]
-				author = ""
 				if split[1] in PEOPLE: 
 					author = PEOPLE[split[1]]
 				time = split[2]
