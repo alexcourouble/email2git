@@ -8,11 +8,17 @@ import time
 import sys
 
 # LINES
-PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
-COMMITS_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt'
-COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt'
+# PATCHES_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/PATCHES_PICKLED_test.txt'
+# COMMITS_PICKLED = '/Users/alexandrecourouble/Desktop/email2git_data/COMMITS_PICKLED_test.txt'
+# COMMIT_MAP = '/Users/alexandrecourouble/Desktop/email2git_data/COMMIT_MAP_PICKLED.txt'
 
-DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+# DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
+
+PATCHES_PICKLED = '/home-students/courouble/email2git_data/PATCHES_PICKLED_test.txt'
+COMMITS_PICKLED = '/home-students/courouble/email2git_data/COMMITS_PICKLED_test.txt'
+COMMIT_MAP = '/home-students/courouble/email2git_data/COMMIT_MAP_PICKLED.txt'
+
+DB_PATH = "/home-students/courouble/email2git_data/lookupDB.db"
 
 MATCH_RATIO = .4
 
