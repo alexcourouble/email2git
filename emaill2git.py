@@ -275,7 +275,9 @@ if __name__ == '__main__':
 
 	if sys.argv > 1:
 		if "test" in sys.argv:
-			OUTPUT ='/Users/alexandrecourouble/Desktop/email2git_data/test_results/LINES_OUTPUT.txt'
+			OUTPUT ='/home-students/courouble/email2git_data/test_results/LINES_OUTPUT.txt'
+		else:
+			OUTPUT ='/home-students/courouble/email2git_data/LINES_OUTPUT.txt'
 
 	getLineMatches()
 
