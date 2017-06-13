@@ -91,6 +91,7 @@ def readDataFile():
 	global PATCHES
 	global PEOPLE
 	# limit = 0
+	countNoAuthor = 0
 	with open(INPUT_FILE_PATH) as f:
 		for i in f:
 			# limit += 1
@@ -101,6 +102,9 @@ def readDataFile():
 				pwid = split[0]
 				if split[1] in PEOPLE: 
 					author = PEOPLE[split[1]]
+				else:
+					author = People("","","","")
+					countNoAuthor += 1
 				time = split[2]
 				files = []
 				lines = []
@@ -118,6 +122,7 @@ def readDataFile():
 					PATCHES[pwid] = Patch(pwid, author, files, time, lines)
 
 				# if limit == 20: break
+	print "Could not find: ", countNoAuthor
 
 
 if __name__ == '__main__':
