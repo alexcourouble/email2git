@@ -71,9 +71,11 @@ def readMailingListData():
 def readMatches():
 	print "Rading Matches"
 
+	# new line matches
 	with open(LINE_MATCHES) as f:
 		parseMatches(pickle.load(f),"l")
 	
+	# new subject matches
 	with open(SUBJECT_MATCHES) as f:
 		parseMatches(pickle.load(f),"s")
 
