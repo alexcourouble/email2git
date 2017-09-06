@@ -1,9 +1,33 @@
 """
+Copyright (C) 2017 Alex Courouble <alex.courouble@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+
+
+
 This script will create a database containing the first line of the commit message, the commit ID, and the commit time.
 
 How to run:
 enter the follwoing command in the linux git repo. The path should be the path to this script. The date is the lower limit of the git log data
+local execution command:
 git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-01} | python /Users/alexandrecourouble/Desktop/email2git/subject_data_gen/git/commit_subject_generator.py
+
+server command:
+git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-01} | python /home-students/courouble/email2git/subject_data_gen/git/commit_subject_generator.py
 
 by Alex Courouble
 """

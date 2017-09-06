@@ -1,4 +1,8 @@
 # email2git
-Find the email patches that that introduced linux commits.
 
-This two-step algorithm generates a list of commits-patch matches. 
+Matching Linux Code with its Mailing List Discussions
+
+This repository contains the code used to retrieve the original email patch and discussion that introduced linux commits.
+
+
+
