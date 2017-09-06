@@ -65,11 +65,23 @@ notMatched = []
 def getLineMatches():
 	readPW()
 	readGit()
+	print "========================= BEGENING ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	doAuthMapMatching()
+	print "========================= doAuthMapMatching() ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	createFilePathMap()
+	print "========================= createFilePathMap() ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	doFileMapMatching()
+	print "========================= doFileMapMatching() ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	createFileNameMap()
+	print "========================= createFileNameMap() ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	doFileNameMapMatching()
+	print "========================= doFileNameMapMatching() ========================="
+	print "========================= ", + len(MATCHED_CID) + ," ========================="
 	# doBruteMatching()
 
 
@@ -195,7 +207,7 @@ def doFileNameMapMatching():
 	countNoFile = 0
 	# iterate through cid-file map
 	for i in COMMIT_FILE_MAP:
-		print i
+		# print i
 		# if i in notMatched: # taking only commits that have NOT been matched by subject
 		# for all the files j touched by commit i
 		for j in COMMIT_FILE_MAP[i]: 
@@ -203,13 +215,13 @@ def doFileNameMapMatching():
 			# Have to check if file is in FILE-PWID map
 			name_only = j.split("/")[-1]
 			if name_only in PATCH_FILE_MAP_SHORT and name_only not in ["Kconfig","Makefile","Kbuild","MAINTAINERS"]:
-				print name_only
-				print PATCH_FILE_MAP_SHORT[name_only]
+				# print name_only
+				# print PATCH_FILE_MAP_SHORT[name_only]
 				for k in PATCH_FILE_MAP_SHORT[name_only]:
 					if i not in MATCHED_CID and k not in MATCHED_PWID:
 						compareDiffs(i,k,MATCH_RATIO)
 			else:
-				print name_only ,"NOT FOUND"
+				# print name_only ,"NOT FOUND"
 				countNoFile += 1
 
 	print "not found: ", countNoFile
@@ -233,8 +245,8 @@ def doBruteMatching():
 			for j in cp.execute("select pwid from lines where ? < date and date < ?",(authorTime,commitTime)):
 				count += 1
 				if j not in MATCHED_PWID and j[0] in patches:
-					print j[0], authorTime, commitTime
-					print patches[j[0]]["time"]
+					# print j[0], authorTime, commitTime
+					# print patches[j[0]]["time"]
 					compareDiffs(i,j[0],.5)
 			# print count
 
