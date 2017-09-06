@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 Reading the a customised git log output
 
 To get files touched by commits:
-	log --no-merges --name-only --pretty=oneline --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
+	git log --no-merges --name-only --pretty=oneline --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
 
 To get the commit diffs:
 	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt

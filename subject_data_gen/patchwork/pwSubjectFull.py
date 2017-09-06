@@ -26,7 +26,7 @@ By Alex Courouble
 """
 import sqlite3, os
 INPUT_FILE_PATH = '/home-students/courouble/email2git_data/raw_data/subject_pw.txt'
-DB_PATH = '/home-students/courouble/email2git_data/pwSubject_short.db'
+DB_PATH = '/home-students/courouble/email2git_data/pwSubject_short.db' # output
 
 
 table = []

@@ -23,7 +23,11 @@ This script will create a database containing the first line of the commit messa
 
 How to run:
 enter the follwoing command in the linux git repo. The path should be the path to this script. The date is the lower limit of the git log data
+local execution command:
 git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-01} | python /Users/alexandrecourouble/Desktop/email2git/subject_data_gen/git/commit_subject_generator.py
+
+server command:
+git log --no-merges --pretty=format:"%H    %ct    %s" --after={2009-01-01} | python /home-students/courouble/email2git/subject_data_gen/git/commit_subject_generator.py
 
 by Alex Courouble
 """
