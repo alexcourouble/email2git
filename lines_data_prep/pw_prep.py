@@ -47,7 +47,7 @@ import sys
 # DB_PATH = "/Users/alexandrecourouble/Desktop/email2git_data/lookupDB.db"
 
 
-MATCHED_PWID_INPUT = '/home-students/courouble/email2git_data/subject_ouput_tmp/matched_pwid_pickled.txt'
+MATCHED_PWID_INPUT = '/home-students/courouble/email2git_data/subject_ouput/matched_pwid_pickled.txt'
 
 INPUT_FILE_PATH = '/home-students/courouble/email2git_data/raw_data/patches_short_time.txt'
 NAME_MAP_PATH = '/home-students/courouble/email2git_data/raw_data/name_map_short.txt'

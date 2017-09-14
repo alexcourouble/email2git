@@ -43,7 +43,7 @@ class Commit:
 		self.authorTime = authorTime
 
 # MATCHED_CID_INPUT = '/Users/alexandrecourouble/Desktop/email2git_data/subject_ouput/matched_cid_pickled.txt'
-MATCHED_CID_INPUT = '/home-students/courouble/email2git_data/subject_ouput_tmp/matched_cid_pickled.txt'
+MATCHED_CID_INPUT = '/home-students/courouble/email2git_data/subject_ouput/matched_cid_pickled.txt'
 
 # INPUT_CID_FILE_MAP = "/Users/alexandrecourouble/Desktop/email2git_data/raw_data/git_file_map.txt"
 INPUT_CID_FILE_MAP = "/home-students/courouble/email2git_data/raw_data/git_file_map.txt"
