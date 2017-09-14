@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 how to get the data from db:
 mysql -u gitmine -p -h 172.30.200.1 KORG_PATCHWORK -e "select id, submitter_id, content from patchwork_patch where date > '2017-01-01';" > patches_short.txt
 
-mysql -u gitmine -p -h 172.30.200.1 KORG_PATCHWORK -e "select id, submitter_id, content from patchwork_patch where date > '2016-10-01';" > patches_short.txt
+mysql -u gitmine -p -h 172.30.200.1 KORG_PATCHWORK -e "select id, submitter_id, content from patchwork_patch where date > '2009-01-01';" > patches_short.txt
 
 This script will go through the output from the wuery and create a lighter file containing the info required for the line-based matching.
 

@@ -21,9 +21,11 @@ Reading the a customised git log output
 
 To get files touched by commits:
 	git log --no-merges --name-only --pretty=oneline --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/git_file_map.txt
+	git log --no-merges --name-only --pretty=oneline --after="2009-01-01" > /home-students/courouble/email2git_data/raw_data/git_file_map.txt
 
 To get the commit diffs:
 	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2009-01-01" > ~/Desktop/email2git_data/raw_data/commits_short.txt
+	git log -p --no-merges --pretty=format:"%H;%an;%ae;%ct;%at" --after="2009-01-01" > /home-students/courouble/email2git_data/raw_data/commits_short.txt
 
 """
 import re
