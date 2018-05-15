@@ -6,8 +6,6 @@ This repository contains the code used to retrieve the original email patch and 
 
 The data comes from two different sources: the Linux git repository (or your own project) and patchwork.
 
-I was very lucky to be able to query the patchwork.kernel.org database directly, which you might not be able to do. 
-
 The easiest way for you to collect patch data would probably be to run you own patchwork instance and parse your mailing list archive that way. 
 
 ## Executing the scripts
