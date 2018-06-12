@@ -66,22 +66,22 @@ def getLineMatches():
 	readPW()
 	readGit()
 	print "========================= BEGENING ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	doAuthMapMatching()
 	print "========================= doAuthMapMatching() ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	createFilePathMap()
 	print "========================= createFilePathMap() ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	doFileMapMatching()
 	print "========================= doFileMapMatching() ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	createFileNameMap()
 	print "========================= createFileNameMap() ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	doFileNameMapMatching()
 	print "========================= doFileNameMapMatching() ========================="
-	print "========================= ", + len(MATCHED_CID) + ," ========================="
+	print "========================= " + len(MATCHED_CID) + " ========================="
 	# doBruteMatching()
 
 
