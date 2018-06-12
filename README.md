@@ -1,22 +1,29 @@
 # email2git
 
-Matching Linux Code with its Mailing List Discussions
+## Background Information
 
-This repository contains the code used to retrieve the original email patch and discussion that introduced linux commits.
+The Linux project's email-based reviewing process is highly effective in filtering open source contributions on their way from mailing list discussions towards Linus Torvalds' Git repository. However, once integrated, it can be difficult to link Git commits back to their review comments in mailing list discussions, especially when considering commits that underwent multiple versions (and hence review rounds), that belong to a multi-patch series, or that were cherry-picked.
 
-The data comes from two different sources: the Linux git repository (or your own project) and patchwork.
+As an answer to these and other issues, we created email2git, a patch retrieving system built for the Linux kernel. For a given commit, the tool is capable of finding the email patch as well as the email conversation that took place during the review process.
 
-The easiest way for you to collect patch data would probably be to run you own patchwork instance and parse your mailing list archive that way. 
+This repository contains the scripts used to retrieve the original email patch and discussion that introduced linux commits. The data comes from two different sources: the Linux git repository and [patchwork](https://github.com/getpatchwork/patchwork). Patchwork tracks the patches sent to a mailing list and organises the review in a user firendly maner. 
 
-## Executing the scripts
+The commit-patch matches are accessible [here](http://mcis.polymtl.ca/~courouble/email2git/). 
+
+
+## Using Email2git for your Project
+
+If your project uses an email-based contribution workflow, you can use email2git to provide your community with better context around your project's commits. 
+
+Following are the steps I followed to run Email2git on the Linux Kernel. Keep in mind that the Kernel has 700k + commits, which represents a large amount of data to parse. The following steps were implemented to speed up the matching process.
 
 The process is composed of two major steps:
 
-- Email subject matching:
+### Email subject matching:
 
-  This steps leverages the patch subject / commit summary concept. Depending on the linux subsystem, the email subject might often be used as the "commit summary as the patch makes it to the main linux tree. 
+  This steps leverages the patch subject / commit summary concept. Depending on the linux subsystem, the email subject might often be used as the "commit summary" as the patch makes it to the main linux tree. 
 
-- Targeted lines-based matching:
+### Targeted lines-based matching:
 
   This step read the author and the files of patches and commit to make targeted patch/git diff line comparisons. 
 
