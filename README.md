@@ -23,8 +23,16 @@ The process is composed of two major steps:
 
   This steps leverages the patch subject / commit summary concept. Depending on the linux subsystem, the email subject might often be used as the "commit summary" as the patch makes it to the main linux tree. 
 
+  The scripts used to prepare the data are in [subject_data_gen](https://github.com/alexcourouble/email2git/tree/master/subject_data_gen). 
+
+  [commit_subject_generator.py](https://github.com/alexcourouble/email2git/blob/master/subject_data_gen/git/commit_subject_generator.py) reads a git log output and [pwSubjectFull.py](https://github.com/alexcourouble/email2git/blob/master/subject_data_gen/patchwork/pwSubjectFull.py) reads a data dump from the patchwork database.
+
+  These two scripts will generate the datasets used by [subject_matching.py](https://github.com/alexcourouble/email2git/blob/master/subject_matching.py) to execute the subject matching.
+
 ### Targeted lines-based matching:
 
   This step read the author and the files of patches and commit to make targeted patch/git diff line comparisons. 
 
-Before each step is executed, you will need to generate the data. The scripts used to generate the data live in the ```lines_data_prep``` and ```subject_data_gen``` directories.
+  In this step, we also have to generate the necessary data with the scripts in [line_data_prep](https://github.com/alexcourouble/email2git/tree/master/lines_data_prep). Once the data is generated, we run [email2git.py](https://github.com/alexcourouble/email2git/blob/master/emaill2git.py) to generate the list of matches. 
+
+  
